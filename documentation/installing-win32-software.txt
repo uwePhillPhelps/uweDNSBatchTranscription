@@ -1,0 +1,92 @@
+This document assumes the osX machine is set up and is working.
+
+----
+
+First four things mandatory:
+
+    1. AutoIT installation
+    2. Naturally speaking installation
+    3. Configure scripts
+    4. Add scheduled task
+
+----
+
+1. AutoIt installation
+
+very straightforward to install, get started by downloading installer from:
+    
+  http://www.autoitscript.com/autoit3/
+    
+
+----
+2. Naturally speaking installation
+
+Slightly more complicated. Some of the bat scripts assume installation in
+a certain place (e.g. C:\Program Files\Nuance\NaturallySpeaking10\Program)
+with a certain executable name (e.g. natspeak.exe).
+
+    you may need to change these paths in "recurse-folder-for-mp3s.au3"
+
+Lastly, it is important to set up and configure a voice profile. The steps
+required to do this should be detailed in the naturally speaking
+documentation.
+
+    it may not be necessary to create "digital recorder" based profiles,
+    but we have only tested with this configuration.
+
+When testing, we configured two voice profiles, both using a "digital
+recorder" instead of a microphone. The software provides basic batch
+processing support for profiles using a digital recorder, but we abandoned
+this in favour of the higher level of control available when using AutoIT.
+
+
+----
+3. Configure scripts
+
+Certain settings are set as temporary environment variables and must be
+set for correct operation.
+
+    navigate to the bat/ subdirectory of the automation tools
+    
+    edit the "set-server-envvar.bat" file
+    
+    set the server_ip to that of the osx apache HTTP and FTP server
+    
+    set the usernames and passwords appropriately for:
+        ftp_user, 
+        ftp_pass, 
+        http_user, 
+        http_pass
+
+----
+4. Add scheduled task
+
+Scheduled tasks are configured in Control Panel. Configure a scheduled
+task to run every 30 minutes with a maximum of one concurrent instance.
+   
+    Set the task to have the following properties:
+
+    task tab:
+        click "browse" and navigate to "_.get+transcribe+upload.bat"
+        tick run only if logged on
+        tick task is enabled
+    
+    schedule tab:
+        select "daily" from the dropdown
+        enter a start time of 00:01 (i.e. 1 minute past midnight)
+        select "1" shedule task every 1 day
+        click "advanced" button:
+            repeat task every 30 minutes
+            duration 23 hours 59 minutes
+            
+    settings tab:
+        untick delete if not scheduled to run again
+        untick stop the task if it runs for ... hours/minutes
+        untick only start the task if idle
+        untick stop the task if the computer ceases to be idle
+        untick don't start the task on batteries
+        untick stop if battery mode begins
+        untick wake the computer to run task
+
+    right click the task in the scheduled task pane, to test that it runs
+
